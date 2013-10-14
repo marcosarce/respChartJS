@@ -47,15 +47,18 @@ function respChart(selector, data, options){
 	// get selector by context
 	var ctx = selector.get(0).getContext("2d");
 	// pointing parent container to make chart js inherit its width
-	var container = $(selector).parent();
+	var $container = $(selector).parent();
+	var $canvas = $(selector);
+	// get canvas' original aspect ratio
+	var aspectRatio = $canvas.width()/$canvas.height();
 
 	// enable resizing matter
 	$(window).resize( generateChart );
 
 	// this function produce the responsive Chart JS
 	function generateChart(){
-		// make chart width fit with its container
-		var ww = selector.attr('width', $(container).width() );
+		// resize chart to container width maintaining original aspect ratio
+		var ww = selector.attr('width', $container.width()).attr('height', $container.width()/aspectRatio);
 		// Initiate new chart or Redraw
 		new Chart(ctx).Line(data, options);
 	};
